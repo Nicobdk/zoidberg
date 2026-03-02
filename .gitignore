@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+env/
+
+# Model files
+*.h5
+*.keras
+
+# Training artifacts
+training_history_v1.json
+evaluation_v1.json
+auc_v1.txt
+*.png
+*.jpg
+*.jpeg
+
+chest_Xray/
+data/
+
+# OS
+.DS_Store
+Thumbs.db
