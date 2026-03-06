@@ -1,4 +1,4 @@
-from tensorflow.keras import layers, models
+from keras import layers, models
 
 def build_cnn(input_shape=(128, 128, 3)):
     model = models.Sequential([
@@ -30,12 +30,12 @@ def build_cnn(input_shape=(128, 128, 3)):
         # ---- Classification ----
         layers.Flatten(),
         layers.Dense(128, activation="relu"),
-        layers.Dense(1, activation="sigmoid")
+        layers.Dense(3, activation="softmax")
     ])
 
     model.compile(
         optimizer="adam",
-        loss="binary_crossentropy",
+        loss="categorical_crossentropy",
         metrics=["accuracy"]
     )
 

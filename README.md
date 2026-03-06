@@ -18,7 +18,10 @@ Le projet suit une méthodologie scientifique structurée :
 Construire un modèle de classification robuste capable de distinguer :
 
 - **Poumons sains** (Normal)
-- **Cas de pneumonie** (Pneumonia)
+- **Pneumonie Bactérienne** (Bacterial Pneumonia)
+- **Pneumonie Virale** (Viral Pneumonia)
+
+**Historique :** Le projet a d'abord commencé par une classification binaire (Normal vs Pneumonia globale) avant d'évoluer vers une classification multi-classes.
 
 **Points d'attention particuliers :**
 
@@ -55,6 +58,21 @@ Construire un modèle de classification robuste capable de distinguer :
 - **EarlyStopping** : Pour éviter le sur-apprentissage.
 - **ReduceLROnPlateau** : Ajustement dynamique du Learning Rate.
 
+### 3️⃣ Transfer Learning (Multiclass Model)
+
+**Architecture :**
+
+- **Base Model** : EfficientNetB0 (pré-entraîné sur ImageNet).
+- **Modification** : Gel de la majorité des couches, `Fine-tuning` sur les 20 dernières couches.
+- **Classification Head** : GlobalAveragePooling2D + BatchNormalization + Dropout (0.5) + Dense (128) + Dropout (0.3).
+- **Sortie** : Softmax pour la classification multi-classes (3 classes : Normal, Bacteria, Virus).
+
+**Optimisation :**
+
+- **Optimiseur** : Adam avec un faible Learning Rate (1e-5).
+- **Perte** : Categorical Crossentropy.
+- **Preprocessing** : Prétraitement natif à EfficientNet (`preprocess_input`).
+
 ---
 
 ## 📊 Final Results (Binary Classification)
@@ -68,6 +86,19 @@ Construire un modèle de classification robuste capable de distinguer :
 | **AUC**                 | **~ 0.93** |
 
 > 💡 **Key Insight** : Le modèle priorise fortement la détection des cas de pneumonie (Recall élevé), ce qui est critique pour éviter de rater un patient malade (faux négatifs).
+
+---
+
+## 📊 Final Results (Multiclass Classification)
+
+Pour l'approche multi-classes (Normal vs Viral vs Bactérien) basée sur l'EfficientNet :
+
+| Métrique                | Score      |
+| :---------------------- | :--------- |
+| **Accuracy Générale**   | ~ 56%      |
+| **Macro F1-Score**      | ~ 55%      |
+
+> 💡 **Observation** : La distinction entre la pneumonie virale et bactérienne s'avère plus complexe que la classification binaire. Des optimisations sur le seuil de décision ou l'augmentation de données ciblée pourraient améliorer ces résultats.
 
 ---
 
@@ -86,9 +117,11 @@ Le modèle démontre un fort pouvoir de discrimination grâce aux outils suivant
 
 ```text
 .
-├── data_loader.py       # Chargement et prétraitement des données
+├── data_loader.py       # Chargement et prétraitement (Binaire)
+├── data_loader_v3.py    # Dataloader adapté pour classification multi-classes
 ├── baseline_model.py    # Modèle ML de référence (PCA + LogReg)
 ├── cnn_model.py         # Script du modèle CNN principal
+├── transfert_model.py   # Modèle de Transfer Learning (EfficientNet)
 ├── evaluation.py        # Fonctions de calcul des métriques
 ├── main.py              # Point d'entrée pour l'entraînement
 └── requirements.txt     # Dépendances Python
@@ -122,6 +155,6 @@ chest_Xray/
 
 - [ ] Optimisation du seuil de décision.
 
-- [ ] Transfer Learning (ResNet, EfficientNet).
+- [x] Transfer Learning (ResNet, EfficientNet).
 
 - [ ] Interprétabilité (Grad-CAM pour voir ce que le modèle "regarde")

@@ -21,6 +21,7 @@ auc_v1.txt
 *.jpeg
 
 chest_Xray/
+chest_Xray_old/
 data/
 
 # OS
