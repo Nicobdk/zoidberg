@@ -8,22 +8,22 @@ __pycache__/
 .venv/
 env/
 
-# Model files
-*.h5
-*.keras
-
-# Training artifacts
-training_history_v1.json
-evaluation_v1.json
-auc_v1.txt
-*.png
-*.jpg
-*.jpeg
+# Data and Models
+data/
+data/*
+models/
+models/*
+experiments/mlflow/*
+experiments/configs/*
+.env
 
 chest_Xray/
 chest_Xray_old/
-data/
 
 # OS
 .DS_Store
 Thumbs.db
+
+Zoidberg.code-workspace
+
+.github/

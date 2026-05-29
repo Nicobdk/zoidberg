@@ -1,19 +1,19 @@
-# from data_loader import load_data
-# from data_exploration import explore_data
-# from baseline_model import train_baseline_model
-# from cnn_model import train_cnn_model
-# from evaluation import evaluate_models
+# from src.data.data_loader import load_data
+# from src.visualization.data_exploration import explore_data
+# from src.models.baseline_model import train_baseline_model
+# from src.models.cnn_model import train_cnn_model
+# from src.models.evaluation import evaluate_models
 
-from data_exploration import plot_multiclass_roc
+from src.visualization.data_exploration import plot_multiclass_roc
 import json
 import random
 
 import pathlib
     
-from data_loader import create_data_generator
+from src.data.data_loader import create_data_generator
 
-from cnn_model import build_cnn
-from transfert_model import build_efficientnet
+from src.models.cnn_model import build_cnn
+from src.models.transfert_model import build_efficientnet
 
 from sklearn.metrics import classification_report
 from sklearn.utils.class_weight import compute_class_weight
@@ -23,9 +23,9 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
-from data_exploration import visualize_batch, visualize_specific_class, show_class_distribution, plot_confusion_matrix, plot_roc_curve
+from src.visualization.data_exploration import visualize_batch, visualize_specific_class, show_class_distribution, plot_confusion_matrix, plot_roc_curve
 
-DATA_DIR = "chest_Xray"
+DATA_DIR = "data/raw/chest_Xray"
 # dossiers = [DATA_DIR+"/train/1_NORMAL", DATA_DIR+'/train/2_BACTERIA', DATA_DIR+'/train/3_VIRUS'
 #     , DATA_DIR+"/test/1_NORMAL", DATA_DIR+'/test/2_BACTERIA', DATA_DIR+'/test/3_VIRUS',
 #     DATA_DIR+"/val/1_NORMAL", DATA_DIR+'/val/2_BACTERIA', DATA_DIR+'/val/3_VIRUS'
@@ -68,13 +68,14 @@ def plot_history(history):
     plt.legend()
     plt.title("Loss")
 
-    plt.savefig("training_curves_v1.png")
+    plt.savefig("reports/figures/training_curves_v1.png")
 
     plt.show()
 
 
 def main():
-    train_gen, val_gen, test_gen = create_data_generator(DATA_DIR)
+    # L'ordre retourné par data_loader est : train_gen, test_gen, val_gen
+    train_gen, test_gen, val_gen = create_data_generator(DATA_DIR)
 
     # model = build_cnn()
     model = build_efficientnet()
@@ -92,7 +93,7 @@ def main():
 
     early_stop = EarlyStopping(
         monitor="val_loss",
-        patience=2,
+        patience=4,
         restore_best_weights=True
     )
 
@@ -104,7 +105,7 @@ def main():
     )
 
     checkpoint = ModelCheckpoint(
-        "zoidberg_efficient_best_v1.h5",
+        "models/trained/zoidberg_cnn_best_crop_v1.h5",
         monitor="val_loss",
         save_best_only=True,
         verbose=1
@@ -113,7 +114,7 @@ def main():
     history = model.fit(
         train_gen,
         validation_data=val_gen,
-        epochs=5,
+        epochs=15,
         class_weight=class_weights,
         callbacks=[early_stop, reduce_lr, checkpoint]
     )
@@ -128,7 +129,7 @@ def main():
     plot_confusion_matrix(y_true, y_pred)
 
     #Only banary classes
-    #plot_roc_curve(y_true, y_pred_probs)
+    plot_roc_curve(y_true, y_pred_probs)
 
     plot_multiclass_roc(y_true, y_pred_probs, n_classes=3)
 
@@ -139,12 +140,12 @@ def main():
     report = classification_report(y_true, y_pred, output_dict=True)
     print(report)
 
-    with open("classification_report_v2.json", "w") as f:
+    with open("models/evaluation/classification_report_v2.json", "w") as f:
         json.dump(report, f)
 
-    ModelCheckpoint("zoidberg_efficientnet_v3.keras", ...)
+    ModelCheckpoint("models/trained/zoidberg_efficientnet_v3.keras", ...)
 
-    with open("training_history_v1.json", "w") as f:
+    with open("models/evaluation/training_history_v1.json", "w") as f:
         json.dump(history.history, f)
 
 if __name__ == "__main__":

@@ -105,7 +105,7 @@ def plot_confusion_matrix(y_true, y_pred):
     ]
 
     plt.figure(figsize=(6,5))
-    sns.heatmap(cm, annot=labels, fmt="", cmap="Greys",
+    sns.heatmap(cm, annot=labels, fmt="", cmap="Blues",
                 xticklabels=["Normal", "Bacterie", "Virus"],
                 yticklabels=["Normal", "Bacterie", "Virus"])
     plt.xlabel("Predicted")
@@ -130,7 +130,7 @@ def plot_roc_curve(y_true, y_prob, best_thresholds):
     plt.legend()
     plt.show()
 
-    with open("auc_v1.txt", "w") as f:
+    with open("../../models/evaluation/auc_v1.txt", "w") as f:
         f.write(f"AUC: {roc_auc}")
 
     print(f"\nAUC Score: {roc_auc:.3f}")

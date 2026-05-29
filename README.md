@@ -4,6 +4,9 @@
 
 **ZOIDBERG** est un projet de classification d'images médicales visant à assister la détection de la pneumonie à partir de radiographies thoraciques (X-ray) en utilisant des techniques de Machine Learning et de Deep Learning.
 
+> [!TIP]
+> **Nouveau dans la documentation ?** Consultez le **[Guide de la Documentation](./project_memory/01_guide_documentation.md)** pour un récapitulatif global et une carte de tous les fichiers de doc.
+
 Le projet suit une méthodologie scientifique structurée :
 
 1.  **Exploration** et compréhension des données.
@@ -93,10 +96,10 @@ Construire un modèle de classification robuste capable de distinguer :
 
 Pour l'approche multi-classes (Normal vs Viral vs Bactérien) basée sur l'EfficientNet :
 
-| Métrique                | Score      |
-| :---------------------- | :--------- |
-| **Accuracy Générale**   | ~ 56%      |
-| **Macro F1-Score**      | ~ 55%      |
+| Métrique              | Score |
+| :-------------------- | :---- |
+| **Accuracy Générale** | ~ 56% |
+| **Macro F1-Score**    | ~ 55% |
 
 > 💡 **Observation** : La distinction entre la pneumonie virale et bactérienne s'avère plus complexe que la classification binaire. Des optimisations sur le seuil de décision ou l'augmentation de données ciblée pourraient améliorer ces résultats.
 
@@ -115,16 +118,34 @@ Le modèle démontre un fort pouvoir de discrimination grâce aux outils suivant
 
 ## 📂 Project Structure
 
+L'architecture du projet a été refondue pour suivre les standards en Data Science / MLOps :
+
 ```text
 .
-├── data_loader.py       # Chargement et prétraitement (Binaire)
-├── data_loader_v3.py    # Dataloader adapté pour classification multi-classes
-├── baseline_model.py    # Modèle ML de référence (PCA + LogReg)
-├── cnn_model.py         # Script du modèle CNN principal
-├── transfert_model.py   # Modèle de Transfer Learning (EfficientNet)
-├── evaluation.py        # Fonctions de calcul des métriques
-├── main.py              # Point d'entrée pour l'entraînement
-└── requirements.txt     # Dépendances Python
+├── data/
+│   ├── raw/           # Données brutes originales (Dataset)
+│   ├── interim/       # Données en cours de transformation
+│   └── processed/     # Données finales prêtes pour la modélisation
+├── notebooks/         # Notebooks Jupyter
+│   ├── 01_exploration/
+│   ├── 02_preprocessing/
+│   └── 03_modeling/
+├── src/               # Code source
+│   ├── data/          # Scripts de dataloader (e.g., data_loader_v3.py)
+│   ├── features/      # Feature engineering
+│   ├── models/        # Entraînement et modélisation (cnn_model.py, transfert_model.py)
+│   └── visualization/ # Génération de graphiques (data_exploration.py)
+├── experiments/       # Fichiers de configuration & tracking
+├── models/
+│   ├── trained/       # Modèles sérialisés (.h5, .keras)
+│   └── evaluation/    # Métriques (classification_reports.json)
+├── reports/
+│   └── figures/       # Visualisations & courbes d'entraînement
+├── tests/             # Tests unitaires
+├── .env.example       # Template des variables d'environnement
+├── main.py            # Point d'entrée pour l'entraînement
+├── requirements.txt   # Dépendances Python
+└── README.md          # Doc du projet
 ```
 
 ## ⚙️ Installation & Dataset
@@ -135,18 +156,19 @@ pip install -r requirements.txt
 
 **Dataset :**
 
-_Le dataset n'est pas inclus dans le dépôt._
+_Le dataset n'est pas inclus dans le dépôt, déposez-le dans `data/raw/`._
 
 Structure attendue :
 
 ```Plaintext
 
-chest_Xray/
-    train/
-        normal/
-        pneumonia/
-    test/
-        ...
+data/
+└── raw/
+    └── chest_Xray/
+        ├── train/
+        │   ├── normal/
+        │   └── pneumonia/
+        └── test/...
 ```
 
 ## 🚀 Next Steps

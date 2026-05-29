@@ -1,91 +1,91 @@
 # 📚 Documentation Technique - Projet Zoidberg
 
-Ce document détaille la structure et le fonctionnement du projet **Zoidberg**, une application de classification d'images médicales (radiographies thoraciques) visant à détecter la pneumonie.
+Ce document détaille la structure et le fonctionnement du projet **Zoidberg**, une application de classification d'images médicales (radiographies thoraciques) visant à détecter la pneumonie et son origine (Virale ou Bactérienne).
 
 ## 📂 Vue d'ensemble des fichiers
 
-Le projet est structuré autour de plusieurs modules Python, chacun ayant une responsabilité spécifique : chargement des données, exploration/visualisation, définition des modèles et exécution principale.
+Le projet est structuré autour de plusieurs modules Python, chacun ayant une responsabilité spécifique : chargement des données, exploration/visualisation, définition des modèles, interprétabilité et exécution principale.
 
 ---
 
 ### 1. `main.py`
 
-C'est le **point d'entrée** de l'application. Il orchestre l'ensemble du flux de travail.
+C'est le **point d'entrée** de l'application. Il orchestre l'ensemble du flux de travail classique.
 
 - **Rôle** :
-  - Initialise les générateurs de données via `data_loader.py`.
-  - Calcule les poids des classes (`class_weights`) pour gérer le déséquilibre éventuel entre les classes (Normal vs Pneumonia).
-  - Construit et compile le modèle CNN via `cnn_model.py`.
+  - Initialise les générateurs de données.
+  - Calcule les poids des classes (`class_weights`) pour gérer le déséquilibre éventuel entre les classes.
+  - Construit et compile le modèle CNN ou Transfert.
   - Lance l'entraînement du modèle sur les données d'entraînement.
-  - Évalue le modèle sur les données de test.
-  - Affiche des visualisations (batch d'images, distribution des classes).
+  - Évalue le modèle sur les données de test et affiche des visualisations.
 
 ---
 
-### 2. `data_loader.py`
+### 2. `src/data/data_loader_v3.py`
 
-Ce fichier gère le **chargement et le prétraitement des données**.
+Ce fichier gère le **chargement et le prétraitement des données** de manière optimisée. L'ancien script `data_loader.py` a été supprimé pour éviter la confusion.
 
 - **Fonction principale** : `create_data_generator(data_dir)`
 - **Détails** :
   - Utilise `ImageDataGenerator` de Keras pour charger les images depuis les dossiers.
   - Applique une **normalisation** (rescale 1./255) pour mettre les pixels à l'échelle [0, 1].
-  - Applique de l'**augmentation de données** (data augmentation) sur l'ensemble d'entraînement pour éviter le surapprentissage :
-    - Rotation (`rotation_range`)
-    - Zoom (`zoom_range`)
-    - Retournement horizontal (`horizontal_flip`)
-  - Retourne trois générateurs : `train_gen` (entraînement), `val_gen` (validation) et `test_gen` (test).
+  - Implémente de l'**augmentation de données** (data augmentation) sur l'ensemble d'entraînement pour éviter le surapprentissage :
+    - Rotation, Zoom, et Retournement horizontal.
+  - **Note** : Le pipeline inclut des stratégies de "Center Cropping" et de prétraitement spécifiques aux modèles de Transfer Learning (comme `preprocess_input` de EfficientNet).
 
 ---
 
-### 3. `cnn_model.py`
+### 3. `src/models/` : L'Évolution Architecturale
 
-Ce fichier définit l'architecture du **Réseau de Neurones Convolutif (CNN)**.
+Le dossier des modèles est le cœur de Zoidberg. Il a grandement évolué depuis la simple baseline pour intégrer des pipelines complexes.
 
-- **Fonction principale** : `build_cnn(input_shape)`
-- **Architecture** :
-  - Modèle séquentiel Keras.
-  - Composé de plusieurs blocs de convolution (`Conv2D`), normalisation (`BatchNormalization`), activation (`ReLU`) et pooling (`MaxPooling2D`).
-  - Inclut une couche de `Dropout` (0.5) pour la régularisation.
-  - Se termine par des couches denses (`Dense`) pour la classification.
-  - La sortie utilise une activation **Sigmoid** pour une classification binaire (0 ou 1).
-- **Compilation** : Utilise l'optimiseur `Adam` et la perte `binary_crossentropy`.
+#### 3.1. Modèles de base
+- **`baseline_model.py`** : Modèle de référence (PCA + Régression Logistique). Sert de point de comparaison "Machine Learning classique".
+- **`cnn_model.py`** : Un CNN binaire créé "from scratch" (Conv2D, MaxPooling, BatchNorm) très performant en détection pure (Recall 98%).
 
----
+#### 3.2. L'Approche Transfer Learning
+- **`binary_model.py`** : Modèle de détection de pneumonie basé sur **EfficientNetB0** pré-entraîné (ImageNet). Les 20 dernières couches sont fine-tunées.
+- **`multiclass_model.py` & `transfert_model.py`** : Modèles utilisant également EfficientNetB0 mais avec une activation **Softmax** finale pour diviser les probabilités entre 3 classes (Normal, Bactérie, Virus).
 
-### 4. `baseline_model.py`
-
-Ce fichier propose un **modèle de référence (baseline)** simple pour comparer les performances.
-
-- **Fonction principale** : `train_baseline(...)`
-- **Approche** :
-  - **PCA (Principal Component Analysis)** : Réduit la dimensionnalité des images en ne gardant que 50 composantes principales.
-  - **Régression Logistique** : Un classifieur linéaire simple entraîné sur les données réduites par PCA.
-- **Objectif** : Fournir un point de comparaison "simple" pour voir si le CNN (plus complexe) apporte réellement une amélioration.
+#### 3.3. L'Approche Hiérarchique (Pipeline Avancé)
+- **`hierarchical_pipeline.py`** : Classe `HierarchicalClassifier` qui orchestre deux modèles à la suite :
+  1. *Étape 1* : Le modèle binaire vérifie si le patient est Normal ou Atteint de Pneumonie.
+  2. *Étape 2* : S'il est atteint, le modèle multi-classes (ou sous-type) prend le relais pour déterminer s'il s'agit d'une pneumonie Virale ou Bactérienne.
+- **`evaluate_hierarchical.py`** : Script dédié à l'évaluation de ce pipeline sur le jeu de test complet avec génération de matrice de confusion médicale.
 
 ---
 
-### 5. `data_exploration.py`
+### 4. `src/visualization/` : Interprétabilité et Exploration
 
-Ce fichier contient des **outils de visualisation** pour mieux comprendre les données.
+La visualisation est cruciale dans le domaine médical pour justifier les décisions de l'IA (Explainable AI).
 
-- **Fonctions clés** :
-  - `show_class_distribution(generator)` : Affiche un graphique à barres montrant le nombre d'images "Normal" vs "Pneumonia".
-  - `visualize_batch(generator, n)` : Affiche un lot d'images avec leurs étiquettes.
-  - `visualize_specific_class(...)` : Permet de visualiser des images d'une classe spécifique.
+#### 4.1. `data_exploration.py`
+Ce fichier contient des outils classiques pour comprendre les données :
+- Affichage de la distribution des classes (graphiques à barres).
+- Affichage d'un lot d'images avec leurs étiquettes.
+
+#### 4.2. `grad_cam.py` (Nouveau module critique)
+Afin de contrer le biais de "Shortcut Learning" (quand l'IA regarde les lettres sur la radio au lieu du poumon), ce script a été développé :
+- **Fonctions clés** : `make_gradcam_heatmap`, `display_gradcam`, `find_last_conv_layer`.
+- **Rôle** : Calcule le gradient de la prédiction par rapport à la dernière couche de convolution pour générer une **Heatmap** (carte de chaleur). Cette carte est superposée à la radio pour voir **exactement quelles zones anatomiques l'IA a "regardé"** pour prendre sa décision.
 
 ---
 
-### 6. `evaluation.py`
+### 5. `src/models/evaluation.py`
 
-- **État actuel** : Fichier vide.
-- **Usage prévu** : Destiné à contenir des fonctions avancées pour évaluer les modèles (matrices de confusion, courbes ROC/AUC, rapports de classification détaillés).
+Ce module regroupe les fonctions analytiques post-entraînement.
+
+- **Rôle** : Produit les métriques médicales clés.
+- **Fonctions** :
+  - Génération des rapports de classification complets (Accuracy, Precision, Recall, F1-Score).
+  - Tracé et sauvegarde des **Matrices de Confusion**.
+  - Trace des courbes d'apprentissage (Loss/Accuracy sur les epochs).
 
 ---
 
 ## 🛠 Résumé des dépendances principales
 
-- **TensorFlow / Keras** : Pour la construction et l'entraînement du CNN.
-- **Scikit-learn** : Pour le modèle baseline (PCA, LogisticRegression) et le calcul des poids des classes.
-- **Matplotlib** : Pour la visualisation des données.
-- **NumPy** : Pour les opérations mathématiques sur les tableaux.
+- **TensorFlow / Keras** : Moteur Deep Learning principal (Entraînement, Transfer Learning, Grad-CAM).
+- **Scikit-learn** : Modèle baseline (PCA, LogisticRegression) et métriques (classification_report, confusion_matrix).
+- **Matplotlib & Seaborn** : Visualisation des données et Heatmaps avancées.
+- **NumPy** : Opérations mathématiques matricielles sous-jacentes.
