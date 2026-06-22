@@ -1,0 +1,34 @@
+
+RAPPORT D'ANALYSE COMPARATIVE - PROJET ZOIDBERG
+Date : 10/06/2026 10:01
+
+================================================================================
+TABLEAU COMPARATIF
+================================================================================
+
+                              Modele                         Architecture                  Type  Classes  Accuracy  F1_Macro  F1_Weighted  AUC  Recall_Normal  Recall_Pneumonia_Bacteria  Recall_Virus Taille_MB
+           CNN Binary (from scratch)                           Custom CNN           Multi-class        3     67.15     64.58        65.61 0.99          90.21                      57.26         45.25      28.2
+                 EfficientNet Binary   EfficientNetB0 (Transfer Learning)                Binary        2       NaN       NaN          NaN 0.99            NaN                      98.00           NaN      26.6
+            EfficientNet Multi-class   EfficientNetB0 (Transfer Learning)           Multi-class        3     56.28     54.97        55.73  NaN          67.08                      60.26         41.00      33.9
+     Pipeline Hiérarchique (2-Stage) EfficientNet Binary + Subtype Binary          Hierarchical        3     71.00     65.00          NaN  NaN          52.00                      95.00         45.00   27 + 27
+Expert Sous-type (Bactérie vs Virus)   EfficientNetB0 (Transfer Learning) Binary (Subtype only)        2     76.00     73.00          NaN  NaN          98.00                      48.00           NaN      26.6
+
+================================================================================
+MEILLEURS SCORES
+================================================================================
+
+AUC-ROC le plus élevé       : 0.9924 (CNN Binary)
+Accuracy la plus élevée     : 71.0% (Pipeline Hiérarchique)
+Recall Pneumonie le plus haut : 98.0% (EfficientNet Binary)
+
+================================================================================
+CONCLUSION
+================================================================================
+
+Le Pipeline Hiérarchique est le modèle le plus performant pour une
+classification complète (3 classes) avec 71% d'accuracy.
+
+Pour un dépistage rapide, l'EfficientNet Binary est recommandé
+(AUC 0.9897, Recall 98%).
+
+Généré automatiquement par le notebook 07_comprehensive_analysis.ipynb

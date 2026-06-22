@@ -7,16 +7,34 @@ __pycache__/
 # Virtual environment
 .venv/
 env/
+venv/
 
-# Data and Models
-data/
-data/*
-models/
-models/*
+# Data - Images dataset (exclude ONLY root data/ folder, NOT src/data/)
+# The leading slash means "only at root"
+/data/raw/
+/data/processed/
+/data/external/
+/data/*.csv
+/data/*.json
+
+# Keep data folder structure documentation
+!/data/README.md
+
+# Models - Ignore trained models (too large) but keep evaluation metrics
+models/trained/*.keras
+models/trained/*.h5
+models/trained/*.weights.h5
+models/trained/*.pb
+models/trained/variables/
+
+# Keep evaluation metrics (important for analysis)
+!models/evaluation/
+
 experiments/mlflow/*
 experiments/configs/*
 .env
 
+# Dataset folders (old structure)
 chest_Xray/
 chest_Xray_old/
 
