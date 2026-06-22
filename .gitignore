@@ -45,3 +45,8 @@ Thumbs.db
 Zoidberg.code-workspace
 
 .github/
+
+*.zip
+
+scripts/*.py
+*.keras

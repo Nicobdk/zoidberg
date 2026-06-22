@@ -10,12 +10,12 @@ import random
 
 import pathlib
     
-from src.data.data_loader import create_data_generator
+from src.data.data_loader_v3 import create_multiclass_generators
 
 from src.models.cnn_model import build_cnn
 from src.models.transfert_model import build_efficientnet
 
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report 
 from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 import tensorflow as tf
@@ -26,11 +26,11 @@ import matplotlib.pyplot as plt
 from src.visualization.data_exploration import visualize_batch, visualize_specific_class, show_class_distribution, plot_confusion_matrix, plot_roc_curve
 
 DATA_DIR = "data/raw/chest_Xray"
-# dossiers = [DATA_DIR+"/train/1_NORMAL", DATA_DIR+'/train/2_BACTERIA', DATA_DIR+'/train/3_VIRUS'
-#     , DATA_DIR+"/test/1_NORMAL", DATA_DIR+'/test/2_BACTERIA', DATA_DIR+'/test/3_VIRUS',
-#     DATA_DIR+"/val/1_NORMAL", DATA_DIR+'/val/2_BACTERIA', DATA_DIR+'/val/3_VIRUS'
-#     ]
-# extensions_images = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'}
+dossiers = [DATA_DIR+"/train/1_NORMAL", DATA_DIR+'/train/2_BACTERIA', DATA_DIR+'/train/3_VIRUS'
+    , DATA_DIR+"/test/1_NORMAL", DATA_DIR+'/test/2_BACTERIA', DATA_DIR+'/test/3_VIRUS',
+    DATA_DIR+"/val/1_NORMAL", DATA_DIR+'/val/2_BACTERIA', DATA_DIR+'/val/3_VIRUS'
+    ]
+extensions_images = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'}
 
 seed = 42
 np.random.seed(seed)
@@ -75,7 +75,7 @@ def plot_history(history):
 
 def main():
     # L'ordre retourné par data_loader est : train_gen, test_gen, val_gen
-    train_gen, test_gen, val_gen = create_data_generator(DATA_DIR)
+    train_gen, test_gen, val_gen = create_multiclass_generators(DATA_DIR)
 
     # model = build_cnn()
     model = build_efficientnet()

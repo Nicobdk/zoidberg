@@ -5,16 +5,9 @@ from sklearn.metrics import confusion_matrix, classification_report, roc_curve, 
 from sklearn.preprocessing import label_binarize
 import seaborn as sns
 
+import sys
 
-
-def show_class_distribution(generator):
-    labels = generator.classes
-    classes, counts = np.unique(labels, return_counts=True)
-
-    plt.bar(classes, counts)
-    plt.xticks(classes, ['Normal', "Pneumonia"])
-    plt.title("Classe distribution")
-    plt.show()
+print(sys.executable)
 
 def show_sample_images(generator, n=5):
     images, labels = next(generator)
@@ -42,16 +35,32 @@ def visualize_batch(generator, n=6):
     plt.tight_layout()
     plt.show()
 
-def show_class_distribution(generator):
+def plot_class_distribution(generator, class_names=None):
     labels = generator.classes
     unique, counts = np.unique(labels, return_counts=True)
 
-    plt.bar(["Normal", "Pneumonia"], counts)
-    plt.title("Class Distribution")
+    if class_names is None:
+        class_names = list(generator.class_indices.keys())
+
+    ordered_class_names = [
+        class_name for class_name, index in sorted(generator.class_indices.items(), key=lambda item: item[1])
+    ]
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(ordered_class_names, counts)
+
+    plt.title("Distribution des classes")
+    plt.xlabel("Classes")
+    plt.ylabel("Nombre d'images")
+
+    for index, count in enumerate(counts):
+        plt.text(index, count, str(count), ha="center", va="bottom")
+
+    plt.tight_layout()
     plt.show()
 
-    print("Normal:", counts[0])
-    print("Pneumonia:", counts[1])
+    for class_name, count in zip(ordered_class_names, counts):
+        print(f"{class_name}: {count}")
 
 def visualize_specific_class(generator, target_class=1, n=6):
     images, labels = next(generator)
