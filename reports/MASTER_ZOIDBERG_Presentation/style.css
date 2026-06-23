@@ -1,215 +1,331 @@
-/* Modern Web Design Aesthetics for Jupyter Notebook Export - Light Theme */
+/* Modern Web Design Aesthetics for Jupyter Notebook Export - Premium Light Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
 
 :root {
   --bg-color: #f8fafc;
-  --text-color: #1e293b;
-  --accent-color: #3b82f6;
-  --accent-glow: rgba(59, 130, 246, 0.15);
+  --text-color: #334155;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
   --card-bg: #ffffff;
   --border-color: #e2e8f0;
   --heading-color: #0f172a;
-  --code-bg: #f1f5f9;
+  --code-bg: #f8fafc;
 }
 
-body {
-  font-family: 'Inter', sans-serif !important;
+body.jp-Notebook {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
   color: var(--text-color) !important;
-  line-height: 1.7 !important;
-  margin: 0;
-  padding: 0;
+  line-height: 1.75 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Flexbox layout for the main container */
-#notebook-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+main {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2.5rem !important;
   background-color: transparent !important;
-  box-shadow: none !important;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 4rem 2rem !important;
 }
 
 /* Transform each Jupyter cell into a sleek card */
-.cell {
+.jp-Cell {
   background: var(--card-bg) !important;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
   padding: 2.5rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  /* Flex layout inside cell to properly align input and output */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  display: block !important;
+  margin: 0 !important;
 }
 
-.cell:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+.jp-Cell:hover {
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Hide empty code cells or cells with no outputs */
+.jp-Cell.jp-mod-noOutputs.jp-mod-noInput,
+.jp-Cell.jp-CodeCell.jp-mod-noOutputs {
+  display: none !important;
+}
+
+/* Hide input blocks for code cells only */
+.jp-CodeCell .jp-Cell-inputWrapper {
+  display: none !important;
+}
+
+/* Convert wrappers to simple blocks to remove prompt columns completely */
+.jp-Cell-inputWrapper,
+.jp-Cell-outputWrapper,
+.jp-InputArea,
+.jp-OutputArea,
+.jp-OutputArea-child,
+.jp-OutputArea-output {
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Hide prompts, collapsers and code editor areas */
+.jp-Collapser,
+.jp-InputPrompt,
+.jp-OutputPrompt,
+.jp-InputArea-editor {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure markdown outputs display properly */
+.jp-MarkdownCell .jp-RenderedHTMLCommon {
+  display: block !important;
 }
 
 /* Force text colors to fix Jupyter overrides */
-.text_cell_render, 
-.text_cell_render p, 
-.text_cell_render ul, 
-.text_cell_render li, 
-.text_cell_render table {
+.jp-RenderedHTMLCommon, 
+.jp-RenderedHTMLCommon p, 
+.jp-RenderedHTMLCommon ul, 
+.jp-RenderedHTMLCommon ol, 
+.jp-RenderedHTMLCommon li {
   color: var(--text-color) !important;
   font-family: 'Inter', sans-serif !important;
-  font-size: 1.15rem !important;
+  font-size: 1.1rem !important;
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+.jp-RenderedHTMLCommon h1, 
+.jp-RenderedHTMLCommon h2, 
+.jp-RenderedHTMLCommon h3, 
+.jp-RenderedHTMLCommon h4, 
+.jp-RenderedHTMLCommon h5, 
+.jp-RenderedHTMLCommon h6 {
   color: var(--heading-color) !important;
   font-weight: 700 !important;
   margin-top: 1rem !important;
   margin-bottom: 1.5rem !important;
   font-family: 'Inter', sans-serif !important;
-  line-height: 1.3;
+  line-height: 1.3 !important;
 }
 
-h1 {
-  font-size: 3rem !important;
-  background: linear-gradient(90deg, #2563eb, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--border-color);
+.jp-RenderedHTMLCommon h1 {
+  font-size: 2.5rem !important;
+  background: linear-gradient(90deg, #2563eb, #7c3aed) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  margin-top: 0 !important;
 }
 
-h2 {
-  font-size: 2.2rem !important;
-  color: #1d4ed8 !important;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.8rem;
+.jp-RenderedHTMLCommon h2 {
+  font-size: 1.8rem !important;
+  color: #1e3a8a !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding-bottom: 0.8rem !important;
 }
 
-h3 {
-  font-size: 1.6rem !important;
-  color: #334155 !important;
+.jp-RenderedHTMLCommon h3 {
+  font-size: 1.4rem !important;
+  color: #3b82f6 !important;
 }
 
-/* Code cells (Hidden for presentation mode) */
-.input_area {
-  display: none !important;
+/* Hero Banner Styling for the first cell */
+main .jp-Cell:first-of-type {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(30, 58, 138, 0.15) !important;
 }
 
-.CodeMirror {
-  display: none !important;
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon p,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon ul,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon li,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon h1,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon h2,
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon h3 {
+  color: #ffffff !important;
 }
 
-/* Output areas */
-.output_area {
-  background: #ffffff !important;
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon h1 {
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+main .jp-Cell:first-of-type .jp-RenderedHTMLCommon h2 {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Centering outputs */
+.jp-OutputArea-child {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Text prints (Console outputs) */
+.jp-RenderedText {
+  background: var(--code-bg) !important;
   border-radius: 12px !important;
   padding: 1.5rem !important;
   border: 1px solid var(--border-color) !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center outputs like images */
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-x: auto !important;
 }
 
-.output_text pre {
+.jp-RenderedText pre {
   color: #334155 !important;
   font-family: 'Fira Code', monospace !important;
+  font-size: 0.95rem !important;
+  margin: 0 !important;
+  white-space: pre-wrap !important;
+  text-align: left !important;
 }
 
-/* Hide errors and warnings */
-.output_stderr {
-  display: none !important;
-}
-
-/* Hide Jupyter prompts (In [1]:) to make it look like a presentation */
-.prompt {
+/* Hide standard error and warnings */
+.jp-RenderedText[data-mime-type="text/stderr"],
+.jp-mod-warning {
   display: none !important;
 }
 
 /* Images & Visualizations */
-img {
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  margin: 1.5rem auto;
-  max-width: 100%;
-  display: block;
-}
-
-img:hover {
-  transform: scale(1.02);
+.jp-RenderedImage img {
+  border-radius: 12px !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
+  margin: 1.5rem auto !important;
+  max-width: 100% !important;
+  display: block !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 /* Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 2rem 0 !important;
+.jp-RenderedHTMLCommon table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
   background: #ffffff !important;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--border-color);
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
-th, td {
-  padding: 1.2rem !important;
+.jp-RenderedHTMLCommon th, 
+.jp-RenderedHTMLCommon td {
+  padding: 1rem !important;
   border-bottom: 1px solid var(--border-color) !important;
-  border-right: none !important;
-  border-left: none !important;
   text-align: left !important;
 }
 
-th {
-  background-color: var(--code-bg) !important;
-  color: #1e293b !important;
+.jp-RenderedHTMLCommon th {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
   font-weight: 600 !important;
-  text-transform: uppercase;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
+  text-transform: uppercase !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em !important;
 }
 
-tr:last-child td {
+.jp-RenderedHTMLCommon tr:last-child td {
   border-bottom: none !important;
 }
 
-tr:nth-child(even) {
+.jp-RenderedHTMLCommon tr:nth-child(even) {
   background-color: #f8fafc !important;
 }
 
+.jp-RenderedHTMLCommon tr:hover {
+  background-color: rgba(37, 99, 235, 0.02) !important;
+}
+
+/* Highlight comparative table custom styling */
+.jp-RenderedHTMLCommon tr:has(td strong) {
+  background-color: rgba(37, 99, 235, 0.04) !important;
+}
+
 /* Alerts / Blockquotes */
-blockquote {
-  background: rgba(59, 130, 246, 0.05);
+.jp-RenderedHTMLCommon blockquote {
+  background: rgba(37, 99, 235, 0.04) !important;
   border-left: 4px solid var(--accent-color) !important;
-  padding: 1.5rem !important;
+  padding: 1.25rem 1.5rem !important;
   margin: 1.5rem 0 !important;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 8px 8px 0 !important;
   color: #1e293b !important;
-  font-style: normal !important;
+}
+
+.jp-RenderedHTMLCommon blockquote p {
+  margin: 0 !important;
 }
 
 /* Custom links */
-a {
+.jp-RenderedHTMLCommon a {
   color: var(--accent-color) !important;
   text-decoration: none !important;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  border-bottom: 2px solid transparent;
+  font-weight: 500 !important;
+  border-bottom: 1.5px solid transparent !important;
+  transition: all 0.2s ease !important;
 }
 
-a:hover {
-  color: #1d4ed8 !important;
-  border-bottom-color: #1d4ed8;
+.jp-RenderedHTMLCommon a:hover {
+  color: var(--accent-hover) !important;
+  border-bottom-color: var(--accent-hover) !important;
+}
+
+/* Remove anchor links next to headings */
+.jp-RenderedHTMLCommon a.anchor-link {
+  display: none !important;
+}
+
+/* Inline Code tags in Markdown */
+.jp-RenderedHTMLCommon code {
+  background-color: var(--code-bg) !important;
+  color: #0f172a !important;
+  padding: 0.15rem 0.35rem !important;
+  border-radius: 4px !important;
+  font-family: 'Fira Code', monospace !important;
+  font-size: 0.9em !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Lists styling */
+.jp-RenderedHTMLCommon ul,
+.jp-RenderedHTMLCommon ol {
+  padding-left: 1.75rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.jp-RenderedHTMLCommon li {
+  margin-bottom: 0.4rem !important;
+}
+
+/* Horizontal rule styling */
+.jp-RenderedHTMLCommon hr {
+  border: 0 !important;
+  height: 1px !important;
+  background: var(--border-color) !important;
+  margin: 1.5rem 0 !important;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
@@ -217,7 +333,7 @@ a:hover {
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 6px;
-  border: 3px solid #f1f5f9;
+  border: 2px solid #f1f5f9;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;

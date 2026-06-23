@@ -1,0 +1,302 @@
+{
+  "cnn_binary": {
+    "model": "CNN Binary (from scratch)",
+    "type": "binary",
+    "n_images": 624,
+    "classes": [
+      "NORMAL",
+      "PNEUMONIA"
+    ],
+    "accuracy": 62.5,
+    "f1_macro": 38.46,
+    "f1_weighted": 48.08,
+    "auc": 0.6856,
+    "recall_per_class": {
+      "NORMAL": 0.0,
+      "PNEUMONIA": 100.0
+    },
+    "confusion_matrix": [
+      [
+        0,
+        234
+      ],
+      [
+        0,
+        390
+      ]
+    ],
+    "classification_report": {
+      "NORMAL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 234.0
+      },
+      "PNEUMONIA": {
+        "precision": 0.625,
+        "recall": 1.0,
+        "f1-score": 0.7692307692307693,
+        "support": 390.0
+      },
+      "accuracy": 0.625,
+      "macro avg": {
+        "precision": 0.3125,
+        "recall": 0.5,
+        "f1-score": 0.38461538461538464,
+        "support": 624.0
+      },
+      "weighted avg": {
+        "precision": 0.390625,
+        "recall": 0.625,
+        "f1-score": 0.4807692307692308,
+        "support": 624.0
+      }
+    }
+  },
+  "efficientnet_binary": {
+    "model": "EfficientNet Binary",
+    "type": "binary",
+    "n_images": 624,
+    "classes": [
+      "NORMAL",
+      "PNEUMONIA"
+    ],
+    "accuracy": 82.21,
+    "f1_macro": 78.65,
+    "f1_weighted": 80.83,
+    "auc": 0.9563,
+    "recall_per_class": {
+      "NORMAL": 55.13,
+      "PNEUMONIA": 98.46
+    },
+    "confusion_matrix": [
+      [
+        129,
+        105
+      ],
+      [
+        6,
+        384
+      ]
+    ],
+    "classification_report": {
+      "NORMAL": {
+        "precision": 0.9555555555555556,
+        "recall": 0.5512820512820513,
+        "f1-score": 0.6991869918699187,
+        "support": 234.0
+      },
+      "PNEUMONIA": {
+        "precision": 0.7852760736196319,
+        "recall": 0.9846153846153847,
+        "f1-score": 0.8737201365187713,
+        "support": 390.0
+      },
+      "accuracy": 0.8221153846153846,
+      "macro avg": {
+        "precision": 0.8704158145875938,
+        "recall": 0.767948717948718,
+        "f1-score": 0.7864535641943451,
+        "support": 624.0
+      },
+      "weighted avg": {
+        "precision": 0.8491308793456034,
+        "recall": 0.8221153846153846,
+        "f1-score": 0.8082702072754516,
+        "support": 624.0
+      }
+    }
+  },
+  "efficientnet_multiclass": {
+    "model": "EfficientNet Multiclass",
+    "type": "multiclass",
+    "n_images": 1402,
+    "classes": [
+      "1_NORMAL",
+      "2_BACTERIA",
+      "3_VIRUS"
+    ],
+    "accuracy": 56.13,
+    "f1_macro": 54.56,
+    "f1_weighted": 56.95,
+    "auc": 0.7387,
+    "recall_per_class": {
+      "1_NORMAL": 61.5,
+      "2_BACTERIA": 55.09,
+      "3_VIRUS": 55.45
+    },
+    "confusion_matrix": [
+      [
+        123,
+        14,
+        63
+      ],
+      [
+        75,
+        379,
+        234
+      ],
+      [
+        108,
+        121,
+        285
+      ]
+    ],
+    "classification_report": {
+      "1_NORMAL": {
+        "precision": 0.4019607843137255,
+        "recall": 0.615,
+        "f1-score": 0.48616600790513836,
+        "support": 200.0
+      },
+      "2_BACTERIA": {
+        "precision": 0.7373540856031129,
+        "recall": 0.5508720930232558,
+        "f1-score": 0.6306156405990017,
+        "support": 688.0
+      },
+      "3_VIRUS": {
+        "precision": 0.4896907216494845,
+        "recall": 0.5544747081712063,
+        "f1-score": 0.5200729927007299,
+        "support": 514.0
+      },
+      "accuracy": 0.5613409415121255,
+      "macro avg": {
+        "precision": 0.5430018638554409,
+        "recall": 0.5734489337314873,
+        "f1-score": 0.5456182137349567,
+        "support": 1402.0
+      },
+      "weighted avg": {
+        "precision": 0.5987109833705576,
+        "recall": 0.5613409415121255,
+        "f1-score": 0.5694823684460171,
+        "support": 1402.0
+      }
+    }
+  },
+  "efficientnet_subtype": {
+    "model": "Expert Sous-type (Bactérie vs Virus)",
+    "type": "binary",
+    "n_images": 1202,
+    "classes": [
+      "2_BACTERIA",
+      "3_VIRUS"
+    ],
+    "accuracy": 76.46,
+    "f1_macro": 73.09,
+    "f1_weighted": 74.47,
+    "auc": 0.8436,
+    "recall_per_class": {
+      "2_BACTERIA": 97.67,
+      "3_VIRUS": 48.05
+    },
+    "confusion_matrix": [
+      [
+        672,
+        16
+      ],
+      [
+        267,
+        247
+      ]
+    ],
+    "classification_report": {
+      "2_BACTERIA": {
+        "precision": 0.7156549520766773,
+        "recall": 0.9767441860465116,
+        "f1-score": 0.826060233558697,
+        "support": 688.0
+      },
+      "3_VIRUS": {
+        "precision": 0.9391634980988594,
+        "recall": 0.4805447470817121,
+        "f1-score": 0.6357786357786358,
+        "support": 514.0
+      },
+      "accuracy": 0.7645590682196339,
+      "macro avg": {
+        "precision": 0.8274092250877683,
+        "recall": 0.7286444665641119,
+        "f1-score": 0.7309194346686664,
+        "support": 1202.0
+      },
+      "weighted avg": {
+        "precision": 0.8112318178465621,
+        "recall": 0.7645590682196339,
+        "f1-score": 0.7446918964048274,
+        "support": 1202.0
+      }
+    }
+  },
+  "hierarchical_pipeline": {
+    "model": "Pipeline Hiérarchique (2-Stage)",
+    "type": "hierarchical",
+    "n_images": 1402,
+    "classes": [
+      "NORMAL",
+      "BACTERIA",
+      "VIRUS"
+    ],
+    "accuracy": 70.68,
+    "f1_macro": 65.38,
+    "f1_weighted": 68.54,
+    "auc": null,
+    "recall_per_class": {
+      "NORMAL": 51.5,
+      "BACTERIA": 95.49,
+      "VIRUS": 44.94
+    },
+    "confusion_matrix": [
+      [
+        103,
+        49,
+        48
+      ],
+      [
+        18,
+        657,
+        13
+      ],
+      [
+        27,
+        256,
+        231
+      ]
+    ],
+    "classification_report": {
+      "NORMAL": {
+        "precision": 0.6959459459459459,
+        "recall": 0.515,
+        "f1-score": 0.5919540229885057,
+        "support": 200.0
+      },
+      "BACTERIA": {
+        "precision": 0.682952182952183,
+        "recall": 0.9549418604651163,
+        "f1-score": 0.7963636363636364,
+        "support": 688.0
+      },
+      "VIRUS": {
+        "precision": 0.791095890410959,
+        "recall": 0.4494163424124514,
+        "f1-score": 0.5732009925558312,
+        "support": 514.0
+      },
+      "accuracy": 0.7068473609129815,
+      "macro avg": {
+        "precision": 0.723331339769696,
+        "recall": 0.6397860676258559,
+        "f1-score": 0.6538395506359911,
+        "support": 1402.0
+      },
+      "weighted avg": {
+        "precision": 0.7244533371836833,
+        "recall": 0.7068473609129815,
+        "f1-score": 0.6853882286658918,
+        "support": 1402.0
+      }
+    }
+  }
+}
