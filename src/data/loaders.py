@@ -16,8 +16,13 @@ class DataConfig:
     BATCH_SIZE = 32
     VALIDATION_SPLIT = 0.2
 
-    # Chemins
-    DATA_DIR = Path("data/raw/chest_Xray")
+    # Chemins (absolus depuis la racine du projet)
+    # Détecte automatiquement la racine (où se trouve data/)
+    _current_file = Path(__file__).resolve()  # src/data/loaders.py
+    _src_dir = _current_file.parent.parent     # src/
+    PROJECT_ROOT = _src_dir.parent             # racine du projet
+
+    DATA_DIR = PROJECT_ROOT / "data" / "raw" / "chest_Xray"
     TRAIN_DIR = DATA_DIR / "train"
     TEST_DIR = DATA_DIR / "test"
 
